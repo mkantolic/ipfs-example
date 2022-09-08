@@ -1,5 +1,5 @@
 body {
-  margin: 0;
+  margin: 0; 
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -10,4 +10,169 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+ 
+.gallery {
+  display: grid;
+  overflow: hidden;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+}
+.modalClass {  
+  text-align: center;  
+  margin-top: 100px;  
+} 
+.btn-outline-secondary {
+   margin-top: 1em;
+   position: relative;
+   left: 24em;
+   border-color: #65ddb7;
+  }
+.btn-outline-secondary:hover { 
+  border-color: #65ddb7;
+  background-color: #65ddb7;
+}
+ 
+.blocks {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.block {
+  position: relative; 
+  max-height: 400px;  
+  overflow: hidden; 
+}
+.block:hover .block__body {
+  position: absolute;
+  top: 0;
+  background: #8a8b8cbc;
+  color: #fff;
+  height: 100%;
+  width: 100%;
+  transition: top .5s;
+}
+.block:hover .block__body h3 {
+  color: #fff;
+}
+
+.block__body {
+  padding: 1em;
+  top: 100%;
+}
+ 
+.menu{
+
+  margin: 1em;
+  display: flex;
+  /* Works well with 100% width  */
+  width: 8.3em;
+  font-size: 0.7em;
+  padding: 0 2em;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bgColorMenu);
+  right: 40px;
+  bottom: 40px;
+  position: fixed;
+}
+
+.menu__item{
+  
+  all: unset;
+  flex-grow: 1;
+  z-index: 100;
+  display: flex;
+  cursor: pointer;
+  position: relative;
+  border-radius: 700%;
+  align-items: center;
+  will-change: transform;
+  justify-content: center;
+  padding: 0.55em 0 0.85em;
+  transition: transform var(--timeOut , var(--duration));
+  
+}
+/*
+.menu__item::before{
+  
+  content: "";
+  z-index: -1;
+  width: 4.2em;
+  height: 4.2em;
+  border-radius: 50%;
+  position: absolute;
+  transform: scale(0);
+  transition: background-color var(--duration), transform var(--duration);
+  
+}
+
+
+.menu__item.active {
+
+  transform: translate3d(0, -.8em , 0);
+
+}
+
+.menu__item.active::before{
+  
+  transform: scale(1);
+  background-color: var(--bgColorItem);
+
+}*/
+
+.icon{
+  
+  width: 2.6em;
+  height: 2.6em;
+  stroke: white;
+  fill: transparent;
+  stroke-width: 1pt;
+  stroke-miterlimit: 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 400;
+  
+}
+
+/*.menu__item.active .icon {
+
+  animation: strok 1.5s reverse;
+  
+}*/
+
+@keyframes strok {
+
+  100% {
+
+      stroke-dashoffset: 400;
+
+  }
+
+}
+
+/*.menu__border{
+
+  left: 0;
+  bottom: 99%;
+  width: 10.9em;
+  height: 2.4em;
+  position: absolute;
+  clip-path: url(#menu);
+  will-change: transform;
+  background-color: var(--bgColorMenu);
+  transition: transform var(--timeOut , var(--duration));
+  
+}*/
+
+.svg-container {
+
+  width: 0;
+  height: 0;
+}
+
+ 
+@media screen and (max-width: 50em) {
+  .menu{
+      font-size: .8em;
+  }
 }

@@ -1,236 +1,7 @@
-import React from "react";
-import './App.css'
-import { useState, Component } from 'react'
-import { Buffer } from "buffer";
-import { create } from 'ipfs-http-client'
-import Web3 from "web3/dist/web3.min.js";
-import Post from './abis/Post.json'
-import axios from 'axios'
-import { useEffect } from 'react'
-import {NFTStorage, Blob} from 'nft.storage/dist/bundle.esm.min.js'
-import Home from "./Home";  
-import TextLink from "./TextLink";
-import { Button,Modal} from 'react-bootstrap';  
+
+  
+/*
  
-const projectId = '2DMVjupML5mG6gOBm9AX8UpTpg8';
-const projectSecret = '4e9277f89a0ddfbae1f83f637d508b27';
-const authorization =
-    'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64'); 
-    const ipfs = create({
-      host: 'ipfs.infura.io',
-      port: 5001,
-      protocol: 'https',
-      headers: {
-          authorization: authorization,
-      }, 
-  })
-  //let NFT_STORAGE_TOKEN= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDUxNTExREVjYUI3MzNBOWRlOUU4NjQzYmRjMGM2MDk5MDY1RUFFQUIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2MjA2NTAyNTg4MywibmFtZSI6InBvcCJ9.faDU4SIH9clWdPY3jYvc97nrr2CHQeuy1VcXjt9ixMw'
-  //const client = new NFTStorage({ token: NFT_STORAGE_TOKEN })
-  class App extends Component {
-
-    constructor(props) {
-      super(props)
-      this.state = {
-        account: '',
-        post: null,
-        images: [],
-        hash:'',
-        loading: true,
-        show: false
-      }
-      this.uploadImage = this.uploadImage.bind(this)
-    }
-
-    async componentWillMount() {
-      await this.loadWeb3()
-      await this.loadBlockchainData()
-    }
-  
-    async loadWeb3() {
-      if (window.ethereum) {
-        window.web3 = new Web3(window.ethereum)
-        await window.ethereum.enable()
-      }
-      else if (window.web3) {
-        window.web3 = new Web3(window.web3.currentProvider)
-      }
-      else {
-        window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
-      }
-    }
-  
-    async loadBlockchainData() {
-      const web3 = window.web3
-      // Load account
-      const accounts = await web3.eth.getAccounts()
-      console.log(accounts)
-      this.setState({ account: accounts[0] })
-      // Network ID
-      const networkId = await web3.eth.net.getId()
-      const networkData = Post.networks[networkId]
-      console.log(networkData)
-      // if(networkData) {
-        const m = true
-      if(m) {
-        // const decentragram = new web3.eth.Contract(Decentragram.abi, networkData.address)
-        const post = new web3.eth.Contract(Post.abi, networkData.address)
-        this.setState({ post })
-        const imagesCount = await post.methods.imageCount().call()
-        this.setState({ imagesCount })
-        console.log("imagecount", imagesCount)
-        // Load images
-        for (var i = 1; i <= imagesCount; i++) {
-          const image = await post.methods.images(i).call()
-          console.log("images is:-",image)
-          this.setState({
-            images: [...this.state.images, image]
-          })
-        }
-        // Sort images. Show highest tipped images first
-       /* this.setState({
-          images: this.state.images.sort((a,b) => b.tipAmount - a.tipAmount )
-        })*/
-        this.setState({ loading: false})
-      } else {
-        window.alert('Post contract not deployed to detected network.')
-      }
-    }
-
-    captureFile = event => {
-
-      event.preventDefault()
-      const file = event.target.files[0]
-      const reader = new window.FileReader()
-      reader.readAsArrayBuffer(file)
-  
-      reader.onloadend = () => {
-        this.setState({ buffer: Buffer(reader.result) })
-        console.log('buffer', this.state.buffer)
-      }
-      console.log(event.target.files) 
-    }
-
-   uploadImage = async postit=> {
-      //e.preventDefault()
-      console.log("submitting..")
-      const result = await ipfs.add(this.state.buffer)
-        console.log("ipfs", result)
-        const hash = result.path
-        this.setState({hash})
-        console.log("hash", result.path)
-       // this.setState({ loading: true })
-        this.state.post.methods.uploadImage(hash,postit).send({ from: this.state.account }).then((r)=> {
-          //return this.setState({ memeHash: result.path })
-          this.setState({hash})
-          window.location.reload();
-        })
-    }
-
-    handleModal(){  
-      this.setState({show:!this.state.show})  
-    } 
-
-   /*  onSubmit = async (e) => {
-    e.preventDefault()
-    console.log("submitting..")
-    const result = await ipfs.add(this.state.buffer)
-      console.log("ipfs", result)
-      const memeHash = result.path
-      this.setState({memeHash})
-      console.log("hash", result.path)
-    
-      this.state.contract.methods.set(memeHash).send({ from: this.state.account }).then((r) => {
-        //return this.setState({ memeHash: result.path })
-        this.setState({memeHash})
-      })
-  }*/
-
-  /*
-<div className="modalClass">  
-                  <Button onClick={()=>this.handleModal()}
-                  className="btn btn-outline-secondary">Click To Add Image</Button>  
-                </div> 
-  */
-    render() {
-      return (
-        <div className="App-header">
-           <TextLink account={this.state.account} /> 
-           <p>&nbsp;</p> 
-
-           <menu class="menu"  >
-                <button class="menu__item" style={{backgroundColor: "#65ddb7"}} 
-                onClick={()=>this.handleModal()} >
-                <svg class="icon" viewBox="0 0 24 24" >
-                  <path  d="M5.1,3.9h13.9c0.6,0,1.2,0.5,1.2,1.2v13.9c0,0.6-0.5,1.2-1.2,1.2H5.1c-0.6,0-1.2-0.5-1.2-1.2V5.1
-                    C3.9,4.4,4.4,3.9,5.1,3.9z"/>
-                  <path  d="M5.5,20l9.9-9.9l4.7,4.7"/>
-                  <path  d="M10.4,8.8c0,0.9-0.7,1.6-1.6,1.6c-0.9,0-1.6-0.7-1.6-1.6C7.3,8,8,7.3,8.9,7.3C9.7,7.3,10.4,8,10.4,8.8z"/>
-                  </svg>
-                </button>  
-                </menu>   
-               
-                 
-                <Modal show={this.state.show} onHide={()=>this.handleModal()}>  
-                  <Modal.Header closeButton>Vamagram Upload</Modal.Header>  
-                  <Modal.Body>
-                  <form onSubmit={(event) => {
-                    event.preventDefault()
-                    const postit = this.imageDescription.value
-                    this.uploadImage(postit)  }}>
-                     
-                    <div className="mb-3">
-                      <input className="form-control" type="file" 
-                      id="formFile" accept=".jpg, .jpeg, .png, .bmp, .gif" 
-                      onChange={this.captureFile}/>
-                    </div>
-                    <textarea
-                            id="imageDescription"
-                            type="text"
-                            ref={(textarea) => { this.imageDescription = textarea }}
-                            className="form-control"
-                            placeholder="Image description..."
-                            rows="3"
-                            required />
-                    <button type="submit" className="btn btn-outline-secondary">Upload</button>
-                  </form>
-                  </Modal.Body>  
-                </Modal>
-              <p>&nbsp;</p>
-              
-              <Home images={this.state.images} />
-                
-              </div>
-             
-      );
-    }
-  }
-  
-  export default App;  
-
-
-/* 
-     <form onSubmit={this.uploadImage} >
-                    <input type='file' onChange={this.captureFile} />
-                    <input type='submit' />
-                  </form>
-
- <form onSubmit={(event) => {
-                event.preventDefault()
-                const postit = this.imageDescription.value
-                this.uploadImage(postit)
-              }} >
-                <input type='file' accept=".jpg, .jpeg, .png, .bmp, .gif" onChange={this.captureFile} />
-                <input
-                        id="imageDescription"
-                        type="text"
-                        ref={(input) => { this.imageDescription = input }}
-                        className="form-control"
-                        placeholder="Image description..."
-                        required />
-                <button type="submit" className="btn btn-primary btn-block btn-lg">Upload</button>
-              </form>
-
-
   class App extends Component { 
     
     async componentWillMount() {
@@ -387,10 +158,10 @@ export default App;
               />
           ))}
         </div>
+*/
 
 
-
-
+/*
 
    function App() {
      
@@ -401,9 +172,6 @@ export default App;
       const [loading, setLoading] = useState(true);
       const [imagesCount, setImagesCount] = useState(0);
       const [buffer, setBuffer] = useState(null);
-      const [img, setImg] = useState();
-      const [result, setRes] = useState()
-
       let ipfs;
       try {
           ipfs = create({
@@ -500,7 +268,7 @@ export default App;
         const uniquePaths = new Set([
           ...images.map((image) => image.path),
           result.path,
-         ]);
+        ]);
         console.log(uniquePaths)
         const uniqueImages = [...uniquePaths.values()]
         .map((path) => {
@@ -514,6 +282,8 @@ export default App;
         });
          
         setImages(uniqueImages);
+        
+        
 
         /*ipfs.add(buffer, (error, result) => {
           console.log("File was stored at Hash:", result);
@@ -586,18 +356,7 @@ export default App;
           form.reset();
       };
       console.log("images ", images);
-      
-      const fetchImage = async () => {
-        const res = await fetch("https://pop-cat.infura-ipfs.io/ipfs/");
-        const imageBlob = await res.blob();
-        const imageObjectURL = URL.createObjectURL(imageBlob);
-        setImg(imageObjectURL);
-        console.log(res.cid) 
-      };
-    
-      useEffect(() => {
-        fetchImage();
-      }, []);
+       
        
         return (
           <div className="App">
@@ -606,7 +365,6 @@ export default App;
               <p>Oh oh, Not connected to IPFS. Checkout out the logs for errors</p>
             )}
              <p>aaaaa{account}</p> 
-
             {ipfs && (
               <>
                 <p>Upload File using IPFS</p>
@@ -617,16 +375,21 @@ export default App;
 
                <div>
              
-               {images.map((image, index) => (
-                  <img
-                    alt={`Uploaded #${index + 1}`}
-                    src={"https://pop-cat.infura-ipfs.io/ipfs/" + memeHash}
-                    style={{ maxWidth: "400px", margin: "15px" }}
-                    key={image.cid.toString() + index}
-                  />
-                ))}
+               {images.map((image, key) => {
+                return (
+                  <div key={key}>
+                    <img src={"https://pop-cat.infura-ipfs.io/ipfs/" + memeHash} />
+                    
+                  </div>
+                );
+              })}
+              <img       
+              src={"https://pop-cat.infura-ipfs.io/ipfs/" + memeHash}
+              style={{ maxWidth: "400px", margin: "15px" }}
+              //key={image.cid.toString() + index}
+              />
+         
            </div> 
-           <img src={img} alt="icons" />
               </>               
             )}
           </header>
