@@ -1,16 +1,13 @@
 import React from "react";
 import './App.css'
-import { useState, Component } from 'react'
+import { Component } from 'react'
 import { Buffer } from "buffer";
 import { create } from 'ipfs-http-client'
 import Web3 from "web3/dist/web3.min.js";
 import Post from './abis/Post.json'
-import axios from 'axios'
-import { useEffect } from 'react'
-import {NFTStorage, Blob} from 'nft.storage/dist/bundle.esm.min.js'
 import Home from "./Home";  
 import TextLink from "./TextLink";
-import { Button,Modal} from 'react-bootstrap';  
+import { Modal} from 'react-bootstrap';  
  
 const projectId = '2DMVjupML5mG6gOBm9AX8UpTpg8';
 const projectSecret = '4e9277f89a0ddfbae1f83f637d508b27';
