@@ -21,8 +21,7 @@ const authorization =
           authorization: authorization,
       }, 
   })
-  //let NFT_STORAGE_TOKEN= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDUxNTExREVjYUI3MzNBOWRlOUU4NjQzYmRjMGM2MDk5MDY1RUFFQUIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2MjA2NTAyNTg4MywibmFtZSI6InBvcCJ9.faDU4SIH9clWdPY3jYvc97nrr2CHQeuy1VcXjt9ixMw'
-  //const client = new NFTStorage({ token: NFT_STORAGE_TOKEN })
+   
   class App extends Component {
 
     constructor(props) {
@@ -82,11 +81,7 @@ const authorization =
           this.setState({
             images: [...this.state.images, image]
           })
-        }
-        // Sort images. Show highest tipped images first
-       /* this.setState({
-          images: this.state.images.sort((a,b) => b.tipAmount - a.tipAmount )
-        })*/
+        } 
         this.setState({ loading: false})
       } else {
         window.alert('Post contract not deployed to detected network.')
